@@ -12,3 +12,61 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+(PROGLOOP)
+  @8191
+  D=A
+  @n
+  M=D  // n = 256 * 512 - 1
+
+  @i
+  M=0  // i = 0
+
+  @KBD
+  D=M
+  @EMPTY
+  D;JEQ
+  @FILL
+  0;JMP
+
+(EMPTY)
+  @color
+  M=0
+  @DRAW
+  0;JMP
+
+(FILL)
+  @color
+  M=-1
+  @DRAW
+  0;JMP
+
+(DRAW)
+  @SCREEN
+  D=A
+  @address
+  M=D  // address = 16384 (base address of the Hack screen)
+
+(DRAWLOOP)
+  @i
+  D=M
+  @n
+  D=D-M
+  @END
+  D;JGT   // if i>n goto END
+
+  @color
+  D=M
+  @address
+  A=M
+  M=D    // RAM[address] = color (16 pixels)
+
+  @i
+  M=M+1  // i = i + 1
+  @address
+  M=M+1  // address = address + 1
+  @DRAWLOOP
+  0;JMP  // goto DRAWLOOP
+
+(END)
+  @PROGLOOP
+  0;JMP  // goto PROGLOOP

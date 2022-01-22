@@ -10,3 +10,39 @@
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
 
 // Put your code here.
+  // product = 0
+  @product
+  M=0
+  // i = R0
+  @R0
+  D=M
+  @i
+  M=D
+(LOOP)
+  // i = i - 1
+  @i
+  M=M-1
+  // if (i < 0) goto STOP
+  @i
+  D=M
+  @STOP
+  D;JLT
+  // product = product + R1
+  @product
+  D=M
+  @R1
+  D=D+M
+  @product
+  M=D
+  // goto LOOP
+  @LOOP
+  0;JMP
+(STOP)
+  // R2 = product
+  @product
+  D=M
+  @R2
+  M=D
+(END)
+  @END
+  0;JMP
