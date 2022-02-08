@@ -40,4 +40,50 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+
+    // Handle A-instructions
+    Mux16     (a=instruction, b=outA, sel=instruction[15], out=instructionOrOutA);
+
+    Not       (in=instruction[15], out=notOpcode);
+    Or        (a=notOpcode, b=instruction[5], out=loadA);
+    ARegister (in=instructionOrOutA, load=loadA, out=valueA, out=addressA, out[0..14]=addressM);
+
+    And       (a=instruction[15], b=instruction[4], out=loadD);           // D-register load logic
+    DRegister (in=outD, load=loadD, out=valueD);                          // ALU x input
+
+    And       (a=instruction[15], b=instruction[12], out=selValueAOrInM);
+    Mux16     (a=valueA, b=inM, sel=selValueAOrInM, out=valueAOrInM);     // ALU y input
+
+    And       (a=instruction[15], b=instruction[3], out=writeM);          // writeM output
+
+    ALU       (x=valueD, y=valueAOrInM, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outA, out=outD, out=outM, zr=zr, ng=ng);
+
+    /**
+     * Program counter implementation
+     *
+     * if (reset == 1) PC=0
+     * else
+     *    // current instruction
+     *    load = ƒ(jump bits, ALU control outputs)
+     *    if (load == 1) PC=A
+     *    else           PC++
+     */
+
+    DMux8Way  (in=instruction[15], sel=instruction[0..2], a=null, b=JGT, c=JEQ, d=JGE, e=JLT, f=JNE, g=JLE, h=JMP);
+
+    Or        (a=zr, b=ng, out=zeroOrNegative);
+    Not       (in=zeroOrNegative, out=notZeroOrNegative);
+    Not       (in=ng, out=notNegative);
+    Not       (in=zr, out=notZero);                                       // helper logic
+
+    And       (a=JGT, b=notZeroOrNegative, out=jmp1);                     // if (ALU out > 0) jump
+    And       (a=JEQ, b=zr, out=jmp2);                                    // if (ALU out = 0) jump
+    And       (a=JGE, b=notNegative, out=jmp3);                           // if (ALU out ≥ 0) jump
+    And       (a=JLT, b=ng, out=jmp4);                                    // if (ALU out < 0) jump
+    And       (a=JNE, b=notZero, out=jmp5);                               // if (ALU out ≠ 0) jump
+    And       (a=JLE, b=zeroOrNegative, out=jmp6);                        // if (ALU out ≤ 0) jump
+
+    Or8Way    (in[0]=false, in[1]=jmp1, in[2]=jmp2, in[3]=jmp3, in[4]=jmp4, in[5]=jmp5, in[6]=jmp6, in[7]=JMP, out=loadPC);
+
+    PC        (in=addressA, load=loadPC, inc=true, reset=reset, out[0..14]=pc);
 }
