@@ -1,0 +1,330 @@
+/** Implements a Tetris game. */
+class TetrisGame {
+
+  field int none;
+  field int down;
+  field int left;
+  field int right;
+
+  field boolean exit;
+  field boolean paused;
+  field boolean gameOver;
+
+  field Playfield playfield;
+  field Tetromino tetromino;
+  field int nextType;
+
+  field int level;
+  field int lines;
+
+  field int samplerate;
+  field int counter;
+  field int delay;
+
+  /** Constructs a new Tetris game. */
+  constructor TetrisGame new() {
+    let none = 0;
+    let down = 2;
+    let left = 3;
+    let right = 4;
+    let exit = false;
+    let paused = false;
+    let gameOver = true;
+    let playfield = Playfield.new();
+    let samplerate = 100;
+    let delay = 1000;
+    do Random.setSeed(1638);
+    let nextType = Random.randRange(6);
+    return this;
+  }
+
+  /** Disposes this game. */
+  method void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+
+  /** Runs the game: handles the user’s inputs and moves the tetrominoes accordingly */
+  method void run() {
+    var char key; // the key currently pressed by the user
+
+    // draw the user interface
+    do drawUI();
+
+    while (~exit) {
+      // waits for a key to be pressed
+      while (key = 0) {
+        let key = Keyboard.keyPressed();
+      }
+      if (key = 78) { do newGame(); }  // n key
+      if (key = 81) { do quit(); }    // q key
+
+      // waits for the key to be released
+      while (~(key = 0)) {
+        let key = Keyboard.keyPressed();
+      }
+    } // while
+    return;
+  }
+
+  /** Draws the user interface. */
+  method void drawUI() {
+    // print logo
+    do Output.moveCursor(2,1);
+    do Output.printString("TTT EEE TTT RR  I SSS");
+    do Output.moveCursor(3,1);
+    do Output.printString(" T  E    T  R R I S  ");
+    do Output.moveCursor(4,1);
+    do Output.printString(" T  EE   T  RR  I SSS");
+    do Output.moveCursor(5,1);
+    do Output.printString(" T  E    T  R R I   S");
+    do Output.moveCursor(6,1);
+    do Output.printString(" T  EEE  T  R R I SSS");
+    // print menu
+    do Output.moveCursor(10,6);
+    do Output.printString("[N]ew Game");
+    do Output.moveCursor(12,6);
+    do Output.printString("[P]ause");
+    do Output.moveCursor(14,6);
+    do Output.printString("<=> Move");
+    do Output.moveCursor(16,6);
+    do Output.printString("SB Rotate");
+    do Output.moveCursor(18,6);
+    do Output.printString("[Q]uit");
+    // draw playing field
+    do Screen.drawRectangle(181,0,185,255);
+    do Screen.drawRectangle(186,253,326,255);
+    do Screen.drawRectangle(327,0,331,255);
+    // print right menu
+    do Output.moveCursor(3,50);
+    do Output.printString("Level:");
+    do Output.moveCursor(8,50);
+    do Output.printString("Lines:");
+    do Output.moveCursor(15,50);
+    do Output.printString("Next:");
+    return;
+  }
+
+  /** Starts a new game. */
+  method void newGame() {
+    var char key; // the key currently pressed by the user
+
+    let gameOver = false;
+    do playfield.clear();
+    if (~(tetromino = null)) {
+      do tetromino.erase();
+    }
+
+    let level = 0;
+    do drawLevel();
+    let lines = 0;
+    do drawLines();
+
+    do Output.moveCursor(10,46);
+    do Output.printString("             ");
+
+    let tetromino = Tetromino.new(nextType);
+    let nextType = Random.randRange(6);
+    do drawNextTetromino();
+
+    do pause(false);
+
+    let counter = 0;
+
+    while (~exit) {
+      let key = Keyboard.keyPressed();
+
+      if (key = 32) { do rotateTetromino(); }     // space bar
+      if (key = 78) { do newGame(); }             // n key
+      if (key = 80) { do pause(~paused); }        // p key
+      if (key = 81) { do quit(); }                // q key
+      if (key = 130) { do moveTetromino(left); }  // left arrow
+      if (key = 132) { do moveTetromino(right); } // right arrow
+      if (key = 133) { do moveTetromino(down); }  // down arrow
+
+      do Sys.wait(samplerate);
+
+      let counter = counter + samplerate;
+      if (modulo(counter, delay) = 0) {
+        do moveTetromino(down);
+        let counter = 0;
+      }
+    }
+    return;
+  }
+
+  method int modulo(int x, int y) {
+    var int result;
+    let result = x;
+    while ((result - y) > (-1)) {
+      let result = result - y;
+    }
+    return result;
+  }
+
+  /** (Un)pauses the game. */
+  method void pause(boolean pause) {
+    if (~gameOver) {
+      if (pause) {
+        let paused = true;
+        let samplerate = 0;
+        do Output.moveCursor(12,48);
+        do Output.printString("* PAUSED *");
+      } else {
+        let paused = false;
+        let samplerate = 100;
+        do Output.moveCursor(12,48);
+        do Output.printString("          ");
+      }
+    }
+    return;
+  }
+
+  /** Quits the game. */
+  method void quit() {
+    if (~paused) {
+      do pause(true);
+    }
+    do Screen.clearScreen();
+    let exit = true;
+    return;
+  }
+
+  /** Moves the tetromino across the playfield. */
+  method void moveTetromino(int direction) {
+    if (direction = down) {
+      if (playfield.isSpace(tetromino, down)) {
+        do tetromino.moveDown();
+      } else {
+        do playfield.setTetromino(tetromino);
+        do checkScore();
+        do checkGameOver();
+      }
+    }
+    if (direction = left) {
+      if (playfield.isSpace(tetromino, left)) {
+        do tetromino.moveLeft();
+      }
+    }
+    if (direction = right) {
+      if (playfield.isSpace(tetromino, right)) {
+        do tetromino.moveRight();
+      }
+    }
+    return;
+  }
+
+  method void rotateTetromino() {
+    if (playfield.canRotate(tetromino)) {
+      do tetromino.rotate();
+    }
+    return;
+  }
+
+  /** Checks if the bottom row is full. */
+  method void checkScore() {
+    var int i;
+    var int j;
+    var int k;
+    var boolean full;
+    var Array grid;
+    var Array row;
+    let grid = playfield.getGrid();
+    let i = 0;
+    while (i < playfield.getHeight()) {
+      let row = grid[i];
+      let full = true;
+      let j = 0;
+      while (j < playfield.getWidth()) {
+        if (row[j] = null) {
+           let full = false;
+        }
+        let j = j + 1;
+      }
+      if (full) {
+        do playfield.clearRow(i);
+        let k = i;
+        while (k > 0) {
+          do playfield.shiftRow(k);
+          let k = k - 1;
+        }
+        let lines = lines + 1;
+        if (modulo(lines, 10) = 0) {
+          let level = level + 1;
+          do drawLevel();
+          let delay = delay - 100;
+        }
+      }
+      let i = i + 1;
+    }
+    do drawLines();
+    return;
+  }
+
+  /** Checks if the game is over. */
+  method void checkGameOver() {
+    if (playfield.isFull()) {
+      do Output.moveCursor(12,46);
+      do Output.printString("* GAME OVER *");
+    } else {
+      let tetromino = Tetromino.new(nextType);
+      let nextType = Random.randRange(6);
+      do drawNextTetromino();
+    }
+    return;
+  }
+
+  /** Draws the current level on the screen. */
+  method void drawLevel() {
+    do Output.moveCursor(5,52);
+    do Output.printString("        ");
+    do Output.moveCursor(5,52);
+    do Output.printInt(level);
+    return;
+  }
+
+  /** Draws the score on the screen. */
+  method void drawLines() {
+    do Output.moveCursor(10,52);
+    do Output.printString("        ");
+    do Output.moveCursor(10,52);
+    do Output.printInt(lines);
+    return;
+  }
+
+  /** Draws the next tetromino on the screen. */
+  method void drawNextTetromino() {
+    // erase the previous one
+    do Screen.setColor(false);
+    do Screen.drawRectangle(410-14, 190, 410 + 42, 190 + 42);
+
+    do Screen.setColor(true);
+    if (nextType = 0) {
+      do Screen.drawRectangle(410, 190, 410 + 28, 190 + 28);
+    }
+    if (nextType = 1) {
+      do Screen.drawRectangle(410 - 14, 190, 410 + 42, 190 + 14);
+    }
+    if (nextType = 2) {
+      do Screen.drawRectangle(410 - 14, 190, 410 + 28, 190 + 14);
+      do Screen.drawRectangle(410, 190 + 14, 410 + 14, 190 + 28);
+    }
+    if (nextType = 3) {
+      do Screen.drawRectangle(410 + 14, 190, 410 + 28, 190 + 42);
+      do Screen.drawRectangle(410, 190 + 28, 410 + 14, 190 + 42);
+    }
+    if (nextType = 4) {
+      do Screen.drawRectangle(410, 190, 410 + 14, 190 + 42);
+      do Screen.drawRectangle(410 + 14, 190 + 28, 410 + 28, 190 + 42);
+    }
+    if (nextType = 5) {
+      do Screen.drawRectangle(410, 190, 410 + 28, 190 + 14);
+      do Screen.drawRectangle(410 - 14, 190 + 14, 410 + 14, 190 + 28);
+    }
+    if (nextType = 6) {
+      do Screen.drawRectangle(410 - 14, 190, 410 + 14, 190 + 14);
+      do Screen.drawRectangle(410, 190 + 14, 410 + 28, 190 + 28);
+    }
+    return;
+  }
+}

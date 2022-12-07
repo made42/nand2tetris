@@ -1,0 +1,1405 @@
+function TetrisGame.new 0
+push constant 15
+call Memory.alloc 1
+pop pointer 0
+push constant 0
+pop this 0
+push constant 2
+pop this 1
+push constant 3
+pop this 2
+push constant 4
+pop this 3
+push constant 0
+pop this 4
+push constant 0
+pop this 5
+push constant 0
+not
+pop this 6
+call Playfield.new 0
+pop this 7
+push constant 100
+pop this 12
+push constant 1000
+pop this 14
+push constant 1638
+call Random.setSeed 1
+pop temp 0
+push constant 6
+call Random.randRange 1
+pop this 9
+push pointer 0
+return
+function TetrisGame.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function TetrisGame.run 1
+push argument 0
+pop pointer 0
+push pointer 0
+call TetrisGame.drawUI 1
+pop temp 0
+label WHILE_EXP0
+push this 4
+not
+not
+if-goto WHILE_END0
+label WHILE_EXP1
+push local 0
+push constant 0
+eq
+not
+if-goto WHILE_END1
+call Keyboard.keyPressed 0
+pop local 0
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 78
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call TetrisGame.newGame 1
+pop temp 0
+label IF_FALSE0
+push local 0
+push constant 81
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call TetrisGame.quit 1
+pop temp 0
+label IF_FALSE1
+label WHILE_EXP2
+push local 0
+push constant 0
+eq
+not
+not
+if-goto WHILE_END2
+call Keyboard.keyPressed 0
+pop local 0
+goto WHILE_EXP2
+label WHILE_END2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function TetrisGame.drawUI 0
+push argument 0
+pop pointer 0
+push constant 2
+push constant 1
+call Output.moveCursor 2
+pop temp 0
+push constant 21
+call String.new 1
+push constant 84
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 3
+push constant 1
+call Output.moveCursor 2
+pop temp 0
+push constant 21
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 4
+push constant 1
+call Output.moveCursor 2
+pop temp 0
+push constant 21
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 5
+push constant 1
+call Output.moveCursor 2
+pop temp 0
+push constant 21
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 6
+push constant 1
+call Output.moveCursor 2
+pop temp 0
+push constant 21
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 10
+push constant 6
+call Output.moveCursor 2
+pop temp 0
+push constant 10
+call String.new 1
+push constant 91
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 93
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 119
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 71
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 12
+push constant 6
+call Output.moveCursor 2
+pop temp 0
+push constant 7
+call String.new 1
+push constant 91
+call String.appendChar 2
+push constant 80
+call String.appendChar 2
+push constant 93
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 14
+push constant 6
+call Output.moveCursor 2
+pop temp 0
+push constant 8
+call String.new 1
+push constant 60
+call String.appendChar 2
+push constant 61
+call String.appendChar 2
+push constant 62
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 77
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 16
+push constant 6
+call Output.moveCursor 2
+pop temp 0
+push constant 9
+call String.new 1
+push constant 83
+call String.appendChar 2
+push constant 66
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 18
+push constant 6
+call Output.moveCursor 2
+pop temp 0
+push constant 6
+call String.new 1
+push constant 91
+call String.appendChar 2
+push constant 81
+call String.appendChar 2
+push constant 93
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 181
+push constant 0
+push constant 185
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push constant 186
+push constant 253
+push constant 326
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push constant 327
+push constant 0
+push constant 331
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push constant 3
+push constant 50
+call Output.moveCursor 2
+pop temp 0
+push constant 6
+call String.new 1
+push constant 76
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 8
+push constant 50
+call Output.moveCursor 2
+pop temp 0
+push constant 6
+call String.new 1
+push constant 76
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 15
+push constant 50
+call Output.moveCursor 2
+pop temp 0
+push constant 5
+call String.new 1
+push constant 78
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 120
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 0
+return
+function TetrisGame.newGame 1
+push argument 0
+pop pointer 0
+push constant 0
+pop this 6
+push this 7
+call Playfield.clear 1
+pop temp 0
+push this 8
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 8
+call Tetromino.erase 1
+pop temp 0
+label IF_FALSE0
+push constant 0
+pop this 10
+push pointer 0
+call TetrisGame.drawLevel 1
+pop temp 0
+push constant 0
+pop this 11
+push pointer 0
+call TetrisGame.drawLines 1
+pop temp 0
+push constant 10
+push constant 46
+call Output.moveCursor 2
+pop temp 0
+push constant 13
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push this 9
+call Tetromino.new 1
+pop this 8
+push constant 6
+call Random.randRange 1
+pop this 9
+push pointer 0
+call TetrisGame.drawNextTetromino 1
+pop temp 0
+push pointer 0
+push constant 0
+call TetrisGame.pause 2
+pop temp 0
+push constant 0
+pop this 13
+label WHILE_EXP0
+push this 4
+not
+not
+if-goto WHILE_END0
+call Keyboard.keyPressed 0
+pop local 0
+push local 0
+push constant 32
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call TetrisGame.rotateTetromino 1
+pop temp 0
+label IF_FALSE1
+push local 0
+push constant 78
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+call TetrisGame.newGame 1
+pop temp 0
+label IF_FALSE2
+push local 0
+push constant 80
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+push this 5
+not
+call TetrisGame.pause 2
+pop temp 0
+label IF_FALSE3
+push local 0
+push constant 81
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+call TetrisGame.quit 1
+pop temp 0
+label IF_FALSE4
+push local 0
+push constant 130
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push pointer 0
+push this 2
+call TetrisGame.moveTetromino 2
+pop temp 0
+label IF_FALSE5
+push local 0
+push constant 132
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push pointer 0
+push this 3
+call TetrisGame.moveTetromino 2
+pop temp 0
+label IF_FALSE6
+push local 0
+push constant 133
+eq
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push pointer 0
+push this 1
+call TetrisGame.moveTetromino 2
+pop temp 0
+label IF_FALSE7
+push this 12
+call Sys.wait 1
+pop temp 0
+push this 13
+push this 12
+add
+pop this 13
+push pointer 0
+push this 13
+push this 14
+call TetrisGame.modulo 3
+push constant 0
+eq
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push pointer 0
+push this 1
+call TetrisGame.moveTetromino 2
+pop temp 0
+push constant 0
+pop this 13
+label IF_FALSE8
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function TetrisGame.modulo 1
+push argument 0
+pop pointer 0
+push argument 1
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 2
+sub
+push constant 1
+neg
+gt
+not
+if-goto WHILE_END0
+push local 0
+push argument 2
+sub
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function TetrisGame.pause 0
+push argument 0
+pop pointer 0
+push this 6
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+pop this 5
+push constant 0
+pop this 12
+push constant 12
+push constant 48
+call Output.moveCursor 2
+pop temp 0
+push constant 10
+call String.new 1
+push constant 42
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 80
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 68
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 42
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+goto IF_END1
+label IF_FALSE1
+push constant 0
+pop this 5
+push constant 100
+pop this 12
+push constant 12
+push constant 48
+call Output.moveCursor 2
+pop temp 0
+push constant 10
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+label IF_END1
+label IF_FALSE0
+push constant 0
+return
+function TetrisGame.quit 0
+push argument 0
+pop pointer 0
+push this 5
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push constant 0
+not
+call TetrisGame.pause 2
+pop temp 0
+label IF_FALSE0
+call Screen.clearScreen 0
+pop temp 0
+push constant 0
+not
+pop this 4
+push constant 0
+return
+function TetrisGame.moveTetromino 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 7
+push this 8
+push this 1
+call Playfield.isSpace 3
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 8
+call Tetromino.moveDown 1
+pop temp 0
+goto IF_END1
+label IF_FALSE1
+push this 7
+push this 8
+call Playfield.setTetromino 2
+pop temp 0
+push pointer 0
+call TetrisGame.checkScore 1
+pop temp 0
+push pointer 0
+call TetrisGame.checkGameOver 1
+pop temp 0
+label IF_END1
+label IF_FALSE0
+push argument 1
+push this 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 7
+push this 8
+push this 2
+call Playfield.isSpace 3
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 8
+call Tetromino.moveLeft 1
+pop temp 0
+label IF_FALSE3
+label IF_FALSE2
+push argument 1
+push this 3
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push this 7
+push this 8
+push this 3
+call Playfield.isSpace 3
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push this 8
+call Tetromino.moveRight 1
+pop temp 0
+label IF_FALSE5
+label IF_FALSE4
+push constant 0
+return
+function TetrisGame.rotateTetromino 0
+push argument 0
+pop pointer 0
+push this 7
+push this 8
+call Playfield.canRotate 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 8
+call Tetromino.rotate 1
+pop temp 0
+label IF_FALSE0
+push constant 0
+return
+function TetrisGame.checkScore 6
+push argument 0
+pop pointer 0
+push this 7
+call Playfield.getGrid 1
+pop local 4
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 7
+call Playfield.getHeight 1
+lt
+not
+if-goto WHILE_END0
+push local 0
+push local 4
+add
+pop pointer 1
+push that 0
+pop local 5
+push constant 0
+not
+pop local 3
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 7
+call Playfield.getWidth 1
+lt
+not
+if-goto WHILE_END1
+push local 1
+push local 5
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop local 3
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 3
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 7
+push local 0
+call Playfield.clearRow 2
+pop temp 0
+push local 0
+pop local 2
+label WHILE_EXP2
+push local 2
+push constant 0
+gt
+not
+if-goto WHILE_END2
+push this 7
+push local 2
+call Playfield.shiftRow 2
+pop temp 0
+push local 2
+push constant 1
+sub
+pop local 2
+goto WHILE_EXP2
+label WHILE_END2
+push this 11
+push constant 1
+add
+pop this 11
+push pointer 0
+push this 11
+push constant 10
+call TetrisGame.modulo 3
+push constant 0
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 10
+push constant 1
+add
+pop this 10
+push pointer 0
+call TetrisGame.drawLevel 1
+pop temp 0
+push this 14
+push constant 100
+sub
+pop this 14
+label IF_FALSE2
+label IF_FALSE1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push pointer 0
+call TetrisGame.drawLines 1
+pop temp 0
+push constant 0
+return
+function TetrisGame.checkGameOver 0
+push argument 0
+pop pointer 0
+push this 7
+call Playfield.isFull 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 12
+push constant 46
+call Output.moveCursor 2
+pop temp 0
+push constant 13
+call String.new 1
+push constant 42
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 71
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 77
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 86
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 42
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push this 9
+call Tetromino.new 1
+pop this 8
+push constant 6
+call Random.randRange 1
+pop this 9
+push pointer 0
+call TetrisGame.drawNextTetromino 1
+pop temp 0
+label IF_END0
+push constant 0
+return
+function TetrisGame.drawLevel 0
+push argument 0
+pop pointer 0
+push constant 5
+push constant 52
+call Output.moveCursor 2
+pop temp 0
+push constant 8
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 5
+push constant 52
+call Output.moveCursor 2
+pop temp 0
+push this 10
+call Output.printInt 1
+pop temp 0
+push constant 0
+return
+function TetrisGame.drawLines 0
+push argument 0
+pop pointer 0
+push constant 10
+push constant 52
+call Output.moveCursor 2
+pop temp 0
+push constant 8
+call String.new 1
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 10
+push constant 52
+call Output.moveCursor 2
+pop temp 0
+push this 11
+call Output.printInt 1
+pop temp 0
+push constant 0
+return
+function TetrisGame.drawNextTetromino 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push constant 410
+push constant 14
+sub
+push constant 190
+push constant 410
+push constant 42
+add
+push constant 190
+push constant 42
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 9
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 410
+push constant 190
+push constant 410
+push constant 28
+add
+push constant 190
+push constant 28
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE0
+push this 9
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 410
+push constant 14
+sub
+push constant 190
+push constant 410
+push constant 42
+add
+push constant 190
+push constant 14
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE1
+push this 9
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 410
+push constant 14
+sub
+push constant 190
+push constant 410
+push constant 28
+add
+push constant 190
+push constant 14
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 410
+push constant 190
+push constant 14
+add
+push constant 410
+push constant 14
+add
+push constant 190
+push constant 28
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE2
+push this 9
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 410
+push constant 14
+add
+push constant 190
+push constant 410
+push constant 28
+add
+push constant 190
+push constant 42
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 410
+push constant 190
+push constant 28
+add
+push constant 410
+push constant 14
+add
+push constant 190
+push constant 42
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE3
+push this 9
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 410
+push constant 190
+push constant 410
+push constant 14
+add
+push constant 190
+push constant 42
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 410
+push constant 14
+add
+push constant 190
+push constant 28
+add
+push constant 410
+push constant 28
+add
+push constant 190
+push constant 42
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE4
+push this 9
+push constant 5
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 410
+push constant 190
+push constant 410
+push constant 28
+add
+push constant 190
+push constant 14
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 410
+push constant 14
+sub
+push constant 190
+push constant 14
+add
+push constant 410
+push constant 14
+add
+push constant 190
+push constant 28
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE5
+push this 9
+push constant 6
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 410
+push constant 14
+sub
+push constant 190
+push constant 410
+push constant 14
+add
+push constant 190
+push constant 14
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 410
+push constant 190
+push constant 14
+add
+push constant 410
+push constant 28
+add
+push constant 190
+push constant 28
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE6
+push constant 0
+return

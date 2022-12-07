@@ -1,0 +1,243 @@
+/** Implements a playfield */
+class Playfield {
+
+  field int gridWidth;
+  field int gridHeight;
+  field Array grid;
+
+  /** Constructs a new Playfield. */
+  constructor Playfield new() {
+    var int i;
+    let gridWidth = 10;
+    let gridHeight = 18;
+    let grid = Array.new(gridHeight);
+    let i = 0;
+    while (i < gridHeight) {
+      let grid[i] = Array.new(gridWidth);
+      let i = i + 1;
+    }
+    return this;
+  }
+
+  /** Disposes this playfield. */
+  method void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+
+  /** Clears the playfield. */
+  method void clear() {
+    var int i;
+    var int j;
+    var Array row;
+    var Square s;
+    let i = 0;
+    while (i < gridHeight) {
+      let row = grid[i];
+      let j = 0;
+      while (j < gridWidth) {
+        if (~(row[j] = null)) {
+          let s = row[j];
+          do s.erase();
+          let row[j] = null;
+        }
+        let j = j + 1;
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  /** Gets the playfield width. */
+  method int getWidth() {
+    return gridWidth;
+  }
+
+  /** Gets the playfield height. */
+  method int getHeight() {
+    return gridHeight;
+  }
+
+  /** Gets the grid. */
+  method Array getGrid() {
+    return grid;
+  }
+
+  /** Gets a square from the playfield. */
+  method Square getSquare(int x, int y) {
+    var Array row;
+    let row = grid[y];
+    return row[x];
+  }
+
+  /** Sets a tetromino on the playfield. */
+  method void setTetromino(Tetromino tetromino) {
+    var int i;
+    var int xpos;
+    var int ypos;
+    var Array row;
+    var Array squares;
+    var Square square;
+    let i = 0;
+    let squares = tetromino.getSquares();
+    while (i < 4) {
+      let square = squares[i];
+      let ypos = square.getYpos();
+      let row = grid[ypos];
+      let row[square.getXpos()] = square;
+      let i = i + 1;
+    }
+    return;
+  }
+
+  /** Checks if there is space for a tetromino in the given direction */
+  method boolean isSpace(Tetromino tetromino, int direction) {
+    var Array row;
+    var Array squares;
+    var Square square;
+    var int xpos;
+    var int ypos;
+    var int xdest;
+    var int ydest;
+    var boolean isSpace;
+    var int i;
+    let squares = tetromino.getSquares();
+    let isSpace = true;
+    let i = 0;
+    if (direction = 2) {
+      while (isSpace & (i < 4)) {
+        let square = squares[i];
+        let xpos = square.getXpos();
+        let ypos = square.getYpos();
+        let ydest = ypos + 1;
+        if (ydest < gridHeight) {
+          let row = grid[ydest];
+          if (~(row[xpos] = null)) {
+            let isSpace = false;
+          }
+        } else {
+          let isSpace = false;
+        }
+        let i = i + 1;
+      }
+    }
+    if (direction = 3) {
+      while (isSpace & (i < 4)) {
+        let square = squares[i];
+        let xpos = square.getXpos();
+        let ypos = square.getYpos();
+        let xdest = xpos - 1;
+        if (ypos > 0) {
+          if (xdest > (-1)) {
+            let row = grid[ypos];
+            if (~(row[xdest] = null)) {
+              let isSpace = false;
+            }
+          } else {
+            let isSpace = false;
+          }
+        }
+        let i = i + 1;
+      }
+    }
+    if (direction = 4) {
+      while (isSpace & (i < 4)) {
+        let square = squares[i];
+        let xpos = square.getXpos();
+        let ypos = square.getYpos();
+        let xdest = xpos + 1;
+        if (ypos > 0) {
+          if (xdest < gridWidth) {
+            let row = grid[ypos];
+            if (~(row[xdest] = null)) {
+              let isSpace = false;
+            }
+          } else {
+            let isSpace = false;
+          }
+        }
+        let i = i + 1;
+      }
+    }
+    return isSpace;
+  }
+
+  /** Clears the bottom row after scoring. */
+  method void clearRow(int rowIndex) {
+    var int j;
+    var Array row;
+    var Square s;
+    let j = 0;
+    let row = grid[rowIndex];
+    while (j < gridWidth) {
+      let s = row[j];
+      do s.erase();
+      do s.dispose();
+      let s = null;
+      let row[j] = null;
+      let j = j + 1;
+    }
+    return;
+  }
+
+  /** Shifts a row down */
+  method void shiftRow(int rowIndex) {
+    var int j;
+    var Array row;
+    var Array prevRow;
+    var Square s;
+    let row = grid[rowIndex];
+    let prevRow = grid[rowIndex - 1];
+    let j = 0;
+    while (j < gridWidth) {
+      if (~(prevRow[j] = null)) {
+        let s = prevRow[j];
+        do s.erase();
+        do s.moveDown();
+        do s.draw();
+        let prevRow[j] = null;
+        let row[j] = s;
+      }
+      let j = j + 1;
+    }
+    return;
+  }
+
+  /** Checks if there is space for a new tetromino */
+  method boolean isFull() {
+    var Array row;
+    var boolean full;
+    let full = false;
+    let row = grid[1];
+    if (row[4] | row[5]) {
+      let full = true;
+    }
+    return full;
+  }
+
+  /** Checks if the tetromino can be rotated. */
+  method boolean canRotate(Tetromino tetromino) {
+    var int type;
+    var int orientation;
+    var boolean canRotate;
+    var Array squares;
+    var Square s;
+    let type = tetromino.getType();
+    let orientation = tetromino.getOrientation();
+    let squares = tetromino.getSquares();
+    let canRotate = true;
+    if (type = 0) {
+      let canRotate = false;
+    }
+    if (type = 1) {
+      if (orientation = 1) {
+        let s = squares[0];
+        if (s.getXpos() > 6) {
+          let canRotate = false;
+        }
+      }
+    }
+    // TODO: check if tetromino can actually be rotated
+    return canRotate;
+  }
+}
