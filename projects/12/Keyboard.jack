@@ -7,9 +7,13 @@
  * A library for handling user input from the keyboard.
  */
 class Keyboard {
+  
+    static int address;
 
     /** Initializes the keyboard. */
     function void init() {
+        let address = 24576;
+        return;
     } 
 
     /**
@@ -33,6 +37,7 @@ class Keyboard {
      * F1 - F12 = 141 - 152
      */
     function char keyPressed() {
+        return Memory.peek(address);
     }
 
     /**								
@@ -41,6 +46,17 @@ class Keyboard {
      * of the pressed key.
      */
     function char readChar() {
+        var char c;
+        do Output.printChar(124);
+        // waits until a key is pressed:
+        while (Keyboard.keyPressed() = 0) {   
+        }
+        let c = Keyboard.keyPressed();
+        while (~(Keyboard.keyPressed() = 0)) {
+        }
+        do Output.backSpace();
+        do Output.printChar(c);
+        return c;
     }
 
     /**								
@@ -49,6 +65,26 @@ class Keyboard {
      * and returns its value. Also handles user backspaces.
      */
     function String readLine(String message) {
+        var boolean ok;
+        var char c;
+        var String str;
+        do Output.printString(message);
+        let str = String.new(256);
+        let ok = true;
+        while (ok) {
+            let c = Keyboard.readChar();
+            if (c = String.newLine()) {
+                let ok = false;
+                return str;
+            } else {
+                if (c = String.backSpace()) {
+                    do str.eraseLastChar();
+                } else {
+                    let str = str.appendChar(c);
+                }
+            }
+        }
+        return str;
     }   
 
     /**								
@@ -58,5 +94,8 @@ class Keyboard {
      * entered text is detected). Also handles user backspaces. 
      */
     function int readInt(String message) {
+        var String str;
+        let str = Keyboard.readLine(message);
+        return str.intValue();
     }
 }

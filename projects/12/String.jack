@@ -12,53 +12,109 @@
  */
 class String {
 
+    field Array str;
+    field int length;
+
     /** constructs a new empty string with a maximum length of maxLength
      *  and initial length of 0. */
     constructor String new(int maxLength) {
+        if (maxLength > 0) {
+            let str = Array.new(maxLength);
+        }
+        let length = 0;
+        return this;
     }
 
     /** Disposes this string. */
     method void dispose() {
+        do Memory.deAlloc(this);
+        return;
     }
 
     /** Returns the current length of this string. */
     method int length() {
+        return length;
     }
 
     /** Returns the character at the j-th location of this string. */
     method char charAt(int j) {
+        return str[j];
     }
 
     /** Sets the character at the j-th location of this string to c. */
     method void setCharAt(int j, char c) {
+        let str[j] = c;
+        return;
     }
 
     /** Appends c to this string's end and returns this string. */
     method String appendChar(char c) {
+        do setCharAt(length, c);
+        let length = length + 1;
+        return this;
     }
 
     /** Erases the last character from this string. */
     method void eraseLastChar() {
+        let length = length - 1;
+        return;
     }
 
     /** Returns the integer value of this string, 
      *  until a non-digit character is detected. */
     method int intValue() {
+        var boolean neg;
+        var int val, d, i;
+        let neg = false;
+        let val = 0;
+        let i = 0;
+        while (i < length()) {
+            if (charAt(i) = 45) {
+                let neg = true;
+            } else {
+                let d = charAt(i) - 48;
+                let val = val * 10 + d;
+            }
+            let i = i + 1;
+        }
+        if (neg) {
+           return -val;
+        }
+        return val;
     }
 
     /** Sets this string to hold a representation of the given value. */
     method void setInt(int val) {
+        var int divisor, quotient;        
+        let length = 0;
+        if ((val & 32678) = false) {
+            do appendChar(45);
+        }
+        let val = Math.abs(val);
+        let divisor = 10000;
+        while (~(divisor = 0)) {
+            let quotient = val / divisor;
+            if (quotient > 0) {
+                do appendChar(quotient + 48);
+                let val = val - (quotient * divisor);
+            }            
+            let divisor = divisor / 10;
+        }
+        return;
     }
 
     /** Returns the new line character. */
     function char newLine() {
+        return 128;
     }
 
     /** Returns the backspace character. */
     function char backSpace() {
+        return 129;
     }
 
     /** Returns the double quote (") character. */
     function char doubleQuote() {
+        return 34;
     }
 }
